@@ -6,7 +6,7 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
-local GITMOJI_LIST = require("lua.gitmoji_list")
+local GITMOJI_LIST = require("lua.gitmoji-list")
 
 local results_title = "| List |"
 local prompt_title = "| Chose a gitmoji |"
@@ -46,7 +46,7 @@ end
 
 vim.api.nvim_create_user_command("Test", function()
 	package.loaded.NeoGitmojiTelescope = nil
-	require("lua.NeoGitmojiTelescope").open()
+	require("lua.neo-gitmoji-telescope").open()
 end, {})
 
 return M

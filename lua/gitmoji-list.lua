@@ -1,4 +1,4 @@
-local GITMOJI_LIST = require("lua.emoji_list")
+local GITMOJI_LIST = require("lua.emoji-list")
 
 local GITMOJI_LIST_STRINGS = {}
 for _, emoji in ipairs(GITMOJI_LIST) do
