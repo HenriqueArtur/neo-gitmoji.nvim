@@ -19,10 +19,19 @@ local function define_buffer_options(title)
 	}
 end
 
---- Define input commands
--- @param window to attach commands
--- @param buffer to attach commands
+---Define input commands
+---@param window window
+---@param buffer buffer
 local function define_commands(window, buffer)
+	-- Enter to confirm
+	vim.keymap.set({ "n", "i", "v" }, "<cr>", function()
+		local lines = vim.api.nvim_buf_get_lines(buffer, 0, 1, false)
+		--
+		print(lines[1])
+		--
+		vim.api.nvim_win_close(window, true)
+		vim.cmd("stopinsert")
+	end, { buffer = buffer })
 	-- Esc or q to close
 	vim.keymap.set("n", "<esc>", function()
 		vim.api.nvim_win_close(window, true)
@@ -32,12 +41,21 @@ local function define_commands(window, buffer)
 	end, { buffer = buffer })
 end
 
-function M.create_floating_buffer(title)
+---Set cursor after first initial position of text
+---@param window window
+---@param initial_text string
+local function set_cursor_possition(window, initial_text)
+	vim.cmd("startinsert")
+	vim.api.nvim_win_set_cursor(window, { 1, vim.str_utfindex(initial_text) + 1 })
+end
+
+function M.create_floating_buffer(title, initial_text)
+	local the_initial_text = initial_text or ""
 	local buffer_options = define_buffer_options(title)
-	-- Create a new scratch buffer
 	local buffer = vim.api.nvim_create_buf(false, true)
-	-- Open buffer in a floating window
+	vim.api.nvim_buf_set_text(buffer, 0, 0, 0, 0, { the_initial_text })
 	local window = vim.api.nvim_open_win(buffer, true, buffer_options)
+	set_cursor_possition(window, the_initial_text)
 	define_commands(window, buffer)
 end
 
