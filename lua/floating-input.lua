@@ -2,14 +2,10 @@ local M = {}
 
 local function define_buffer_options(title)
 	local the_title = title or "Input:"
-
-	-- Calculate window dimensions
 	local height = 1
 	local width = math.floor(vim.o.columns * 0.8)
 	local row = math.floor((vim.o.lines - height) / 2)
 	local col = math.floor((vim.o.columns - width) / 2)
-
-	-- Set buffer options
 	return {
 		title = the_title,
 		relative = "editor",
@@ -37,17 +33,11 @@ local function define_commands(window, buffer)
 end
 
 function M.create_floating_buffer(title)
-	local buffer_options = define_buffer_options()
-
+	local buffer_options = define_buffer_options(title)
 	-- Create a new scratch buffer
 	local buffer = vim.api.nvim_create_buf(false, true)
-
 	-- Open buffer in a floating window
 	local window = vim.api.nvim_open_win(buffer, true, buffer_options)
-
-	-- Set buffer name
-	vim.api.nvim_buf_set_name(buffer, title)
-
 	define_commands(window, buffer)
 end
 
