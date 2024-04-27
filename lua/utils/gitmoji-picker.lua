@@ -46,7 +46,7 @@ local attach_mappings = function(prompt_bufnr)
   end)
 end
 
-function M.open(opts)
+function M.open_gitmoji_picker(opts)
   opts = opts or default_opts
   pickers
     .new(opts, {
