@@ -38,15 +38,15 @@ local finder = finders.new_dynamic({
   entry_maker = entry_maker,
 })
 
-local attach_mappings = function(prompt_bufnr)
-  return actions.select_default:replace(function()
+local attach_mappings = function(prompt_bufnr, callback)
+  actions.select_default:replace(function()
     actions.close(prompt_bufnr)
     local selection = action_state.get_selected_entry()
-    return selection.value
+    callback(selection.value)
   end)
 end
 
-function M.open_gitmoji_picker(opts)
+function M.open_gitmoji_picker(callback, opts)
   opts = opts or default_opts
   pickers
     .new(opts, {
@@ -54,7 +54,10 @@ function M.open_gitmoji_picker(opts)
       results_title = results_title,
       finder = finder,
       sorter = conf.generic_sorter(opts),
-      attach_mappings = attach_mappings,
+      attach_mappings = function(prompt_bufnr)
+        attach_mappings(prompt_bufnr, callback)
+        return true
+      end,
     })
     :find()
 end
