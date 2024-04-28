@@ -12,6 +12,4 @@ function M.setup()
   end)
 end
 
-vim.api.nvim_create_user_command("NeoGitmoji", function() M.setup() end, {})
-
 return M
