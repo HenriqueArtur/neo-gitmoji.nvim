@@ -1,1 +1,1 @@
-require("lua.neo-gitmoji").setup()
+require("lua.neo-gitmoji")
