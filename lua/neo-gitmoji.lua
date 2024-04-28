@@ -3,7 +3,7 @@ local floating_input = require("lua.neo-gitmoji.floating-input")
 
 local M = {}
 
-function M.setup_neo_gitmoji()
+function M.setup()
   picker(function(value)
     floating_input.create_floating_buffer({
       title = "Enter the commit title: [gitmoji " .. value.emoji .. "]",
