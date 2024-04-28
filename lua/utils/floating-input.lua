@@ -7,8 +7,13 @@ local function confirm_action(callback, window, buffer)
   vim.cmd("stopinsert")
 end
 
-local function set_keys_to_confirmation(window, buffer)
-  vim.keymap.set({ "n", "i", "v" }, "<cr>", function() confirm_action(print, window, buffer) end, { buffer = buffer })
+local function set_keys_to_confirmation(window, buffer, callback)
+  vim.keymap.set(
+    { "n", "i", "v" },
+    "<cr>",
+    function() confirm_action(callback, window, buffer) end,
+    { buffer = buffer }
+  )
 end
 
 local function close_window(window) vim.api.nvim_win_close(window, true) end
@@ -21,8 +26,8 @@ end
 ---Define input commands
 ---@param window window
 ---@param buffer buffer
-local function define_commands(window, buffer)
-  set_keys_to_confirmation(window, buffer)
+local function define_commands(window, buffer, on_confirmation_callback)
+  set_keys_to_confirmation(window, buffer, on_confirmation_callback)
   set_keys_to_close_window(window, buffer)
 end
 
@@ -61,16 +66,11 @@ local function set_cursor_possition(window, initial_text)
   vim.api.nvim_win_set_cursor(window, { 1, vim.str_utfindex(initial_text) + 1 })
 end
 
-function M.create_floating_buffer(title)
+function M.create_floating_buffer(opt)
   local the_initial_text = ""
-  local window, buffer = define_window_and_buffer(title)
+  local window, buffer = define_window_and_buffer(opt.title)
   set_cursor_possition(window, the_initial_text)
-  define_commands(window, buffer)
+  define_commands(window, buffer, opt.on_confirmation_callback)
 end
-
-vim.api.nvim_create_user_command("Floating", function()
-  package.loaded.floatingInput = nil
-  require("lua.floating-input").create_floating_buffer("Title:")
-end, {})
 
 return M
