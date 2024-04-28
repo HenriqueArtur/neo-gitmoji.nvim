@@ -1,5 +1,5 @@
-local picker = require("lua.neo-gitmoji.gitmoji-picker").open_gitmoji_picker
-local floating_input = require("lua.neo-gitmoji.floating-input")
+local picker = require("neo-gitmoji.gitmoji-picker").open_gitmoji_picker
+local floating_input = require("neo-gitmoji.floating-input")
 
 local M = {}
 
