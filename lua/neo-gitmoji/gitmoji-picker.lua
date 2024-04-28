@@ -6,7 +6,7 @@ local conf = require("telescope.config").values
 local action_state = require("telescope.actions.state")
 local actions = require("telescope.actions")
 
-local GITMOJI_LIST = require("lua.emoji-list")
+local GITMOJI_LIST = require("lua.neo-gitmoji.emoji-list")
 
 local default_opts = {
   layout_strategy = "vertical",
