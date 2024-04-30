@@ -51,15 +51,9 @@ local function define_buffer_options(title)
 end
 
 local function define_window_and_buffer(title, the_initial_text)
-  local SECOND_TITLE_SIGN = "SecondTitleSign"
-
   local buffer_options = define_buffer_options(title)
   local buffer = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_text(buffer, 0, 0, 0, 0, { the_initial_text })
-
-  vim.fn.sign_define(SECOND_TITLE_SIGN, { text = "Second Title", texthl = "Title" })
-  vim.fn.sign_place(0, "line", SECOND_TITLE_SIGN, buffer, { lnum = 0 })
-
   local window = vim.api.nvim_open_win(buffer, true, buffer_options)
   return window, buffer
 end
