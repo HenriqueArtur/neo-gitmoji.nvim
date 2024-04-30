@@ -62,8 +62,8 @@ end
 ---@param window window
 ---@param initial_text string
 local function set_cursor_possition(window, initial_text)
-  vim.cmd("startinsert")
   vim.api.nvim_win_set_cursor(window, { 1, vim.str_utfindex(initial_text) + 1 })
+  vim.cmd("startinsert")
 end
 
 function M.create_floating_buffer(opt)
