@@ -47,6 +47,8 @@ local function define_buffer_options(title)
     style = "minimal",
     focusable = true,
     border = "rounded",
+    footer = "[00/48]",
+    footer_pos = "right",
   }
 end
 
