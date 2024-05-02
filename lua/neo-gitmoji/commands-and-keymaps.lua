@@ -1,4 +1,4 @@
-local start_neo_gitmoji = require("neo-gitmoji").setup
+local start_neo_gitmoji = require("neo-gitmoji").open_floating
 
 local M = {}
 
