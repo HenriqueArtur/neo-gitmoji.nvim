@@ -1,7 +1,7 @@
 <div align="center">
-	<a href="https://gitmoji.dev">
-		<img src="https://cloud.githubusercontent.com/assets/7629661/20073135/4e3db2c2-a52b-11e6-85e1-661a8212045a.gif" width="456" alt="gitmoji">
-	</a>
+ <a href="https://gitmoji.dev">
+  <img src="https://cloud.githubusercontent.com/assets/7629661/20073135/4e3db2c2-a52b-11e6-85e1-661a8212045a.gif" width="456" alt="gitmoji">
+ </a>
 </div>
 <div align="center">
   <a href="https://dotfyle.com/plugins/HenriqueArtur/neo-gitmoji.nvim">
@@ -12,9 +12,23 @@
       src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square"
       alt="Gitmoji"
     />
-  </a> 
+  </a>
 </div>
 
 # 🔭 Neo gitmoji
-A Telescope integration for [gitmoji](https://github.com/). 
 
+A Telescope integration for [gitmoji](https://github.com/).
+
+## Installation
+
+Install the plugin with your preferred package manager:
+
+### [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+```lua
+{
+    'HenriqueArtur/neo-gitmoji.nvim',
+    dependencies = {'nvim-telescope/telescope.nvim'},
+    opts = {}
+}
+```
