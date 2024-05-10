@@ -19,11 +19,21 @@
 
 A Telescope integration for [gitmoji](https://github.com/).
 
+<!-- <video-link> -->
+
+<!--toc:start-->
+- [🔭 Neo gitmoji](#🔭-neo-gitmoji)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Customize a keymap](#customize-a-keymap)
+<!--toc:end-->
+
 ## Installation
 
 Install the plugin with your preferred package manager:
 
-### [lazy.nvim](https://github.com/folke/lazy.nvim)
+<details>
+  <summary>lazy.nvim</summary>
 
 ```lua
 {
@@ -31,4 +41,47 @@ Install the plugin with your preferred package manager:
     dependencies = {'nvim-telescope/telescope.nvim'},
     opts = {}
 }
+```
+
+</details>
+
+<details>
+  <summary>Packer</summary>
+
+```lua
+require("packer").startup(function()
+  use({
+    'HenriqueArtur/neo-gitmoji.nvim',
+    config = function()
+        require("neo-gitmoji").setup()
+    end,
+    requires = { {'nvim-telescope/telescope.nvim'} }
+  })
+end)
+```
+
+</details>
+
+<details>
+  <summary>vim-plug</summary>
+
+```vim
+Plug 'HenriqueArtur/neo-gitmoji.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+lua << EOF
+require("neo-gitmoji").setup()
+EOF
+```
+
+</details>
+
+## Usage
+
+You can open floating menu with `<leader>gm` or using `:NeoGitmoji`
+
+### Customize a keymap
+
+```lua
+local floating_menu = require("neo-gitmoji").open_floating
+vim.keymap.set('n', '<your-keymap>', function() floating_menu() end, {})
 ```
