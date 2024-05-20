@@ -16,7 +16,11 @@ echo "$almost_parsed" \
 >> $tmp_file
 
 if [ -f $tmp_file ]; then
-	rm $file
-	mv $tmp_file $file
+	if cmp "$file" "$tmp_file"; then
+		rm $tmp_file
+	else
+		rm $file
+		mv $tmp_file $file
+	fi
 fi
 
