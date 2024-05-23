@@ -17,7 +17,7 @@
 
 # 🔭 Neo gitmoji
 
-A Telescope integration for [gitmoji](https://github.com/).
+A Telescope integration for [gitmoji](https://gitmoji.dev/).
 
 ## Installation
 
