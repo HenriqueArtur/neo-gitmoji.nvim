@@ -14,7 +14,20 @@ function M.open_floating()
   picker(function(value)
     floating_input.create_floating_buffer({
       title = "Enter the commit title: [gitmoji " .. value.emoji .. "]",
-      on_confirmation_callback = function(a_title) Git.commit(value.emoji .. " " .. a_title) end,
+      on_confirmation_callback = function(a_title, close, show_error)
+        local full_title = value.emoji .. " " .. a_title
+        Git.commit(
+          full_title,
+          function()
+            vim.notify("Committed: " .. full_title, vim.log.levels.INFO)
+            close()
+          end,
+          function(err)
+            vim.notify(err, vim.log.levels.ERROR)
+            show_error(err)
+          end
+        )
+      end,
     })
   end)
 end

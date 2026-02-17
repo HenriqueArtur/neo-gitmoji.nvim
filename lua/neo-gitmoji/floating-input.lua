@@ -1,5 +1,7 @@
 local M = {}
 
+local ns = vim.api.nvim_create_namespace("neo-gitmoji")
+
 local history = {}
 local MAX_HISTORY = 5
 
@@ -15,9 +17,33 @@ end
 local function confirm_action(callback, window, buffer)
   local lines = vim.api.nvim_buf_get_lines(buffer, 0, 1, false)
   save_to_history(lines[1])
-  callback(lines[1])
-  vim.api.nvim_win_close(window, true)
   vim.cmd("stopinsert")
+
+  local function close()
+    if vim.api.nvim_win_is_valid(window) then
+      vim.api.nvim_win_close(window, true)
+    end
+  end
+
+  local function show_error(err)
+    if not vim.api.nvim_win_is_valid(window) then return end
+    local first_line = err:match("([^\n]+)") or err
+    vim.diagnostic.set(ns, buffer, {
+      {
+        lnum = 0,
+        col = 0,
+        message = first_line,
+        severity = vim.diagnostic.severity.ERROR,
+      },
+    }, {})
+    vim.defer_fn(function()
+      if vim.api.nvim_win_is_valid(window) then
+        vim.cmd("startinsert")
+      end
+    end, 10)
+  end
+
+  callback(lines[1], close, show_error)
 end
 
 local function set_keys_to_confirmation(window, buffer, callback)
@@ -75,6 +101,10 @@ local function define_commands(window, buffer, on_confirmation_callback)
   set_keys_to_confirmation(window, buffer, on_confirmation_callback)
   set_keys_to_close_window(window, buffer)
   set_history_navigation(window, buffer)
+  vim.api.nvim_create_autocmd("TextChangedI", {
+    buffer = buffer,
+    callback = function() vim.diagnostic.reset(ns, buffer) end,
+  })
 end
 
 local function define_buffer_options(title)
