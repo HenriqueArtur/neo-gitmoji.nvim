@@ -13,7 +13,7 @@ end
 function M.open_floating()
   picker(function(value)
     floating_input.create_floating_buffer({
-      title = "Enter the commit title: [gitmoji " .. value.emoji .. "]",
+      title = "Enter the commit title: [" .. value.emoji .. " " .. value.description .. "]",
       on_confirmation_callback = function(a_title, close, show_error)
         local full_title = value.emoji .. " " .. a_title
         Git.commit(
