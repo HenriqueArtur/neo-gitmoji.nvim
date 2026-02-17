@@ -25,6 +25,7 @@ A Telescope integration for [gitmoji](https://gitmoji.dev/).
 - [🔭 Neo gitmoji](#🔭-neo-gitmoji)
   - [Installation](#installation)
   - [Usage](#usage)
+    - [Commit history](#commit-history)
     - [Customize a keymap](#customize-a-keymap)
 <!--toc:end-->
 
@@ -78,6 +79,17 @@ EOF
 ## Usage
 
 You can open floating menu with `<leader>gm` or using `:NeoGitmoji`
+
+### Commit history
+
+The last 5 commit messages are stored per session. While typing in the commit input, use:
+
+| Key | Action |
+|-----|--------|
+| `<Up>` | Navigate to a previous commit message |
+| `<Down>` | Navigate to a newer commit message |
+
+Pressing `<Down>` after navigating restores whatever you had typed before browsing the history.
 
 ### Customize a keymap
 
