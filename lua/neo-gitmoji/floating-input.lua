@@ -1,7 +1,20 @@
 local M = {}
 
+local history = {}
+local MAX_HISTORY = 5
+
+local function save_to_history(message)
+  if message == "" then return end
+  if history[1] == message then return end
+  table.insert(history, 1, message)
+  if #history > MAX_HISTORY then
+    table.remove(history)
+  end
+end
+
 local function confirm_action(callback, window, buffer)
   local lines = vim.api.nvim_buf_get_lines(buffer, 0, 1, false)
+  save_to_history(lines[1])
   callback(lines[1])
   vim.api.nvim_win_close(window, true)
   vim.cmd("stopinsert")
@@ -23,12 +36,45 @@ local function set_keys_to_close_window(window, buffer)
   vim.keymap.set("n", "q", function() close_window(window) end, { buffer = buffer })
 end
 
+local function set_history_navigation(window, buffer)
+  local history_index = 0
+  local saved_text = ""
+
+  local function set_line(text)
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { text })
+    vim.api.nvim_win_set_cursor(window, { 1, #text })
+  end
+
+  vim.keymap.set("i", "<Up>", function()
+    if history_index == 0 then
+      local lines = vim.api.nvim_buf_get_lines(buffer, 0, 1, false)
+      saved_text = lines[1]
+    end
+    if history_index < #history then
+      history_index = history_index + 1
+      set_line(history[history_index])
+    end
+  end, { buffer = buffer })
+
+  vim.keymap.set("i", "<Down>", function()
+    if history_index > 0 then
+      history_index = history_index - 1
+      if history_index == 0 then
+        set_line(saved_text)
+      else
+        set_line(history[history_index])
+      end
+    end
+  end, { buffer = buffer })
+end
+
 ---Define input commands
 ---@param window window
 ---@param buffer buffer
 local function define_commands(window, buffer, on_confirmation_callback)
   set_keys_to_confirmation(window, buffer, on_confirmation_callback)
   set_keys_to_close_window(window, buffer)
+  set_history_navigation(window, buffer)
 end
 
 local function define_buffer_options(title)
