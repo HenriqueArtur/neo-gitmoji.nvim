@@ -1,6 +1,8 @@
 local M = {}
 
 local ns = vim.api.nvim_create_namespace("neo-gitmoji")
+local counter_ns = vim.api.nvim_create_namespace("neo-gitmoji-counter")
+local TITLE_MAX = 64
 
 local history = {}
 local MAX_HISTORY = 5
@@ -94,6 +96,24 @@ local function set_history_navigation(window, buffer)
   end, { buffer = buffer })
 end
 
+local function set_char_counter(buffer)
+  local function update()
+    local lines = vim.api.nvim_buf_get_lines(buffer, 0, 1, false)
+    local count = vim.fn.strchars(lines[1] or "")
+    local hl = count > TITLE_MAX and "WarningMsg" or "Comment"
+    vim.api.nvim_buf_set_extmark(buffer, counter_ns, 0, 0, {
+      id = 1,
+      virt_text = { { string.format("[%d/%d]", count, TITLE_MAX), hl } },
+      virt_text_pos = "eol",
+    })
+  end
+  update()
+  vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
+    buffer = buffer,
+    callback = update,
+  })
+end
+
 ---Define input commands
 ---@param window window
 ---@param buffer buffer
@@ -101,6 +121,7 @@ local function define_commands(window, buffer, on_confirmation_callback)
   set_keys_to_confirmation(window, buffer, on_confirmation_callback)
   set_keys_to_close_window(window, buffer)
   set_history_navigation(window, buffer)
+  set_char_counter(buffer)
   vim.api.nvim_create_autocmd("TextChangedI", {
     buffer = buffer,
     callback = function() vim.diagnostic.reset(ns, buffer) end,
